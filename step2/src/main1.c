@@ -118,13 +118,23 @@ int main ( int argc, char *argv[] ) {
     LISTE* pcollect_data = &collect_data;
     LISTE collect_bss;
     LISTE* pcollect_bss = &collect_bss ;
-    printf("Début Machine 2\n");
-    inst_def_t* dict;
-    int nb_inst;
-    dict = lect_dico_int("./dic.txt", &nb_inst);printf("pff\n");
-    printf("nombre op %d\n ", nb_inst);
-    for (i = 0;i<nb_inst;i++) {printf("%s\n",dict[i].symbole);}
 
+    inst_def_t* dict;
+    pinst_def_t* pdict = &dict;
+
+    int nb_inst;
+    lect_dico_int("./dic.txt", &nb_inst, pdict);printf("pff\n");
+    printf("nombre op %d\n ", nb_inst);
+    printf("\n\n\n\n");
+  	for (i = 0;i<nb_inst;i++) {
+      printf("%s\n", dict[i].symbole);
+
+  		printf("%s\n",dict[i].type);
+
+  		printf("%d\n",dict[i].nb_op);
+  	}
+    printf("Début Machine 2\n");
+    if( !strcmp(dict[27].symbole, "LI")) printf("Good\n");
     machine_etat_2(listlex, pcollect_ins,  pcollect_data, pcollect_bss, dict,  &nb_inst);
 
 
