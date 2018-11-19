@@ -40,7 +40,7 @@ LISTE lecture_instruction(char* token, char* type, int nbop, int nline, int dec,
 		LEXEM c = l->val;
 		printf("lec_it\n");
 		int i;
-		for(i=0; i< p_nb_inst; i++){printf("boucle1\n");printf("%s\n",c->obj);
+		for(i=0; i< p_nb_inst; i++){printf("boucle1\n");printf("%s\n",c->obj);printf("%s\n", dict[i].symbole);
 			if(!strcmp(c->obj, dict[i].symbole)){printf("if1\n");
 				strcpy(token, c->obj);
 				nline = c->nline;
@@ -92,5 +92,6 @@ LISTE lecture_instruction(char* token, char* type, int nbop, int nline, int dec,
 					printf("Erreur d'incohérence de nombre d'opérandes à la ligne %d \n", &nline);
 					return NULL;}
 			return l;}
-		return NULL;}
+		}
+		return NULL;
 }

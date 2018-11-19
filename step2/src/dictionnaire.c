@@ -37,7 +37,7 @@ void lect_dico_int(char* nomFichierDico, int* p_nb_inst,pinst_def_t* dict){
 	}
 	printf("10\n");printf("nombre op %d\n ", *p_nb_inst);printf("2\n");
 	inst_def_t tab[*p_nb_inst];
-	*dict = tab;
+	
 	/*tab=calloc(*p_nb_inst, sizeof(*tab));*/	printf("2\n");
 
 	if(tab == NULL){
@@ -64,7 +64,7 @@ void lect_dico_int(char* nomFichierDico, int* p_nb_inst,pinst_def_t* dict){
 		printf("%d\n",tab[i].nb_op);
 	}
 	printf("end\n\n" );
-
+	*dict = tab;
 	/*if( !strcmp(tab[27].symbole, "LI")) printf("Good\n");*/
 
 	fclose(f1);

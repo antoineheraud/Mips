@@ -22,7 +22,7 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
 
     etat S = INIT;
     LEXEM c = listlex->val;
-    printf("%s\n",c->obj);
+    /*printf("%s\n",c->obj);*/
     /* parametres communs des collections*/
     char token[STRLEN];
     char type[STRLEN];
@@ -45,7 +45,7 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
 
 
     printf("mach\n");
-    while(c != NULL){     printf("%s\n",c->obj);		printtype(c->type);
+    while(c != NULL){     printf("%s\n",c->obj);printtype(c->type);
     	switch(S){
     	    case INIT:
               printf("init\n");
@@ -55,7 +55,7 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
 				      else if(!strcmp(c->obj, ".bss"))	{S = BSS1;printf("bss1\n");}
     	        break;
 
-			case TEXT:printf("Text\n");printf("%s\n",c->obj);
+			case TEXT:printf("Text\n");printf("%s\n",c->obj);c->obj = strlwr(c->obj);
 				if(!strcmp(c->obj, ".data")){ S = DATA1;printf("1if\n");}
 
 				else  if(!strcmp(c->obj, ".bss")){ S = BSS1;
