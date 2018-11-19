@@ -1,19 +1,19 @@
-#include <stdlib.h>
+
 #include <stdio.h>
-#include <unistd.h>
 #include <string.h>
 
 
-#include <global.h>
-#include <notify.h>
-#include <lex.h>
-#include <liste.h>
-#include <instruction.h>
-#include <donneesdata.h>
-#include <donneesbss.h>
-#include <tablesymb.h>
-#include <lecture.h>
-#include <dictionnaire.h>
+
+#include "global.h"
+#include "notify.h"
+#include "lex.h"
+#include "liste.h"
+#include "instruction.h"
+#include "donneesdata.h"
+#include "donneesbss.h"
+#include "tablesymb.h"
+#include "lecture.h"
+#include "dictionnaire.h"
 
 
 typedef enum { INIT, DATA1, BSS1, TEXT } etat;
@@ -43,6 +43,8 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
     BSS BS;
     char bss[STRLEN];
 
+    char lower[STRLEN];
+    int i = 0;
 
     printf("mach\n");
     while(c != NULL){     printf("%s\n",c->obj);printtype(c->type);
@@ -55,7 +57,11 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
 				      else if(!strcmp(c->obj, ".bss"))	{S = BSS1;printf("bss1\n");}
     	        break;
 
-			case TEXT:printf("Text\n");printf("%s\n",c->obj);c->obj = strlwr(c->obj);
+			case TEXT:printf("Text\n");printf("%s\n",c->obj);
+      /* fonction pour passer le token en minuscule */
+        for (i = 0; c->obj[i];i++)  c->obj[i] = tolower(c->obj[i]);
+
+
 				if(!strcmp(c->obj, ".data")){ S = DATA1;printf("1if\n");}
 
 				else  if(!strcmp(c->obj, ".bss")){ S = BSS1;

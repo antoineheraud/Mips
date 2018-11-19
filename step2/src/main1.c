@@ -10,16 +10,17 @@
 #include <string.h>
 
 
-#include <global.h>
-#include <notify.h>
-#include <lex.h>
-#include <liste.h>
-#include <instruction.h>
-#include <donneesdata.h>
-#include <donneesbss.h>
-#include <tablesymb.h>
-#include <lecture.h>
-#include <machine2.h>
+#include "global.h"
+#include "notify.h"
+#include "lex.h"
+#include "liste.h"
+#include "instruction.h"
+#include "donneesdata.h"
+#include "donneesbss.h"
+#include "tablesymb.h"
+#include "lecture.h"
+#include "dictionnaire.h"
+#include "machine2.h"
 
 /**
  * @param exec Name of executable.

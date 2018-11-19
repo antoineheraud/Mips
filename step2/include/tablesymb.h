@@ -2,7 +2,7 @@
 #define _TABLESYMB_H_
 
 #include <stdio.h>
-#include <liste.h>
+
 
 
 struct tablesymb {

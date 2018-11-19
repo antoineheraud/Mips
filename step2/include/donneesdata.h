@@ -2,7 +2,6 @@
 #define _DONNEESDATA_H_
 
 #include <stdio.h>
-#include <liste.h>
 
 
 /*  Peut servir mais flemme d'avoir trop d'enum*/

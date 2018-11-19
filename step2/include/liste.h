@@ -1,16 +1,14 @@
 #ifndef _LISTE_H_
 #define _LISTE_H_
 
-#include <stdlib.h>
+
 #include <stdio.h>
-#include <unistd.h>
 #include <string.h>
 
 
-#include <global.h>
-#include <notify.h>
+#include "global.h"
+#include "notify.h"
 /*#include <lex.h>*/
-#include <liste.h>
 /*#include <instruction.h>
 #include <donneesdata.h>
 #include <donneesbss.h>
