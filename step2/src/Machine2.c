@@ -1,19 +1,19 @@
-#include <stdlib.h>
+
 #include <stdio.h>
-#include <unistd.h>
 #include <string.h>
 
 
-#include <global.h>
-#include <notify.h>
-#include <lex.h>
-#include <liste.h>
-#include <instruction.h>
-#include <donneesdata.h>
-#include <donneesbss.h>
-#include <tablesymb.h>
-#include <lecture.h>
-#include <dictionnaire.h>
+
+#include "global.h"
+#include "notify.h"
+#include "lex.h"
+#include "liste.h"
+#include "instruction.h"
+#include "donneesdata.h"
+#include "donneesbss.h"
+#include "tablesymb.h"
+#include "lecture.h"
+#include "dictionnaire.h"
 
 
 typedef enum { INIT, DATA1, BSS1, TEXT } etat;
@@ -22,7 +22,7 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
 
     etat S = INIT;
     LEXEM c = listlex->val;
-    printf("%s\n",c->obj);
+    /*printf("%s\n",c->obj);*/
     /* parametres communs des collections*/
     char token[STRLEN];
     char type[STRLEN];
@@ -30,7 +30,7 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
     int line;
     int dec;
     /* parametres de la collection d'instruction*/
-    OPINST* opt;
+    OPINST opt[2];
     IT INST;
 
     /* parametres de la collection de donnees data*/
@@ -43,9 +43,11 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
     BSS BS;
     char bss[STRLEN];
 
+    char lower[STRLEN];
+    int i = 0;
 
     printf("mach\n");
-    while(c != NULL){     printf("%s\n",c->obj);		printtype(c->type);
+    while(c != NULL){     printf("%s\n",c->obj);printtype(c->type);
     	switch(S){
     	    case INIT:
               printf("init\n");
@@ -56,14 +58,20 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
     	        break;
 
 			case TEXT:printf("Text\n");printf("%s\n",c->obj);
+      /* fonction pour passer le token en minuscule */
+        for (i = 0; c->obj[i];i++)  c->obj[i] = tolower(c->obj[i]);
+
+
 				if(!strcmp(c->obj, ".data")){ S = DATA1;printf("1if\n");}
 
 				else  if(!strcmp(c->obj, ".bss")){ S = BSS1;
           printf("1eif\n");}
         else if(!strcmp(c->obj, "\0")) {printf("nl\n");break;}
-				else{
-          listlex=lecture_instruction(token, type, nbop, line, dec, opt, listlex, dict, p_nb_inst);
+				else{printf("traitement\n");
+          listlex=lecture_instruction(token, type, &nbop, &line, &dec, opt, listlex, dict, p_nb_inst);
           printf("lecture\n");
+          printf("%s %s %d %d %d\n",token,type,nbop,line,dec);
+          printf("%s\n",opt[0]->token,opt[1]->token );
 				  INST = nouvinst(token, type, nbop, line, dec, opt);
           printf("inst\n");
 		 		  *collect_ins = enchaine(*collect_ins, INST);
