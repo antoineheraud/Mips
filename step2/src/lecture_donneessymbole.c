@@ -18,21 +18,21 @@
 int islabel(LISTE l){
 	LEXEM c = l->val;
 	if(c->type == SYMB){
-		if(((l->suiv)->val)->type == DEUX_P)	return 1;
+		if(((LEXEM)l->suiv->val)->type == DEUX_P)	return 1;
 		else return 0;
 	}
 	return 0;
 }
 
 TS nouvts(LISTE l, TS tabsym){
-	LEXEL c = l->val;
-	if(islabel){
+	LEXEM c = l->val;
 		strcpy(tabsym->etiq, c->obj);
-		strcpy(tabsym->type, c->type);
+		strcpy(tabsym->type, "SYMB");
 		tabsym->line = c->nline;
 		strcpy(tabsym->section, "TEXT");
-		tabsym->decalage = 0;
+		tabsym->dec = 4;
 		tabsym->suiv = NULL;
-	}
-	return NULL;
+	return tabsym;	
 }
+
+

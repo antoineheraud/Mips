@@ -19,3 +19,5 @@ DATA nouvdata(char* data,char* type, int nbop, int line, int dec, OPDD operande)
 LISTE lecture_data(char* data, char* type, int nbop, int line, int dec, OPDD operande, LISTE l);
 BSS nouvbss(char* bss, char* type, int nbop, int line, int dec,int valeur);
 LISTE lecture_bss(char* bss, char* type, int nbop, int line, int dec, int valeur, LISTE l);
+int islabel(LISTE l);
+TS nouvts(LISTE l, TS tabsym);
