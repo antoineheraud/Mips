@@ -12,7 +12,7 @@
 
 
 #include <stdio.h>
-#include <liste.h>
+#include "liste.h"
 
 enum type{
 	ZERO,

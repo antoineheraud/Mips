@@ -3,7 +3,7 @@
 
 
 #include <stdio.h>
-#include <liste.h>
+
 
 enum typeop{
   REGI,
