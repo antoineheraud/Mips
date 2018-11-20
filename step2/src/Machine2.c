@@ -30,7 +30,7 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
     int line;
     int dec;
     /* parametres de la collection d'instruction*/
-    OPINST* opt;
+    OPINST opt[2];
     IT INST;
 
     /* parametres de la collection de donnees data*/
@@ -67,9 +67,11 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
 				else  if(!strcmp(c->obj, ".bss")){ S = BSS1;
           printf("1eif\n");}
         else if(!strcmp(c->obj, "\0")) {printf("nl\n");break;}
-				else{
-          listlex=lecture_instruction(token, type, nbop, line, dec, opt, listlex, dict, p_nb_inst);
+				else{printf("traitement\n");
+          listlex=lecture_instruction(token, type, &nbop, &line, &dec, opt, listlex, dict, p_nb_inst);
           printf("lecture\n");
+          printf("%s %s %d %d %d\n",token,type,nbop,line,dec);
+          printf("%s\n",opt[0]->token,opt[1]->token );
 				  INST = nouvinst(token, type, nbop, line, dec, opt);
           printf("inst\n");
 		 		  *collect_ins = enchaine(*collect_ins, INST);
