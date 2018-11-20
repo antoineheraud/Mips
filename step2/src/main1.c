@@ -158,10 +158,10 @@ int main ( int argc, char *argv[] ) {
 
       lit->dec = 12;
 
-      OPINST opi = calloc(1,sizeof(*opi));
-      strcpy(opi->token, "7");
-      opi->type = IMMEDIATE;
-      lit->opt[0] =  opi;
+      OPINST opi1 = calloc(1,sizeof(*opi1));
+      strcpy(opi1->token, "7");
+      opi1->type = IMMEDIATE;
+      lit->opt[1] =  opi1;
 
       lb = entete(lb,lit);
 
@@ -170,7 +170,7 @@ int main ( int argc, char *argv[] ) {
 
       printf("inst : %s\n",lit->obj);
 
-      printf("op : %s\n",(lit->opt[0])->token);
+      printf("op : %s\n",(lit->opt[1])->token);
 /* fin test collection instructions */
 
 

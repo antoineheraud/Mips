@@ -30,7 +30,8 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
     int line;
     int dec;
     /* parametres de la collection d'instruction*/
-    OPINST opt[2];
+    OPINST opt[STRLEN];
+
     IT INST;
 
     /* parametres de la collection de donnees data*/
@@ -71,7 +72,7 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
           listlex=lecture_instruction(token, type, &nbop, &line, &dec, opt, listlex, dict, p_nb_inst);
           printf("lecture\n");
           printf("%s %s %d %d %d\n",token,type,nbop,line,dec);
-          printf("%s\n",opt[0]->token,opt[1]->token );
+          printf("%s %s %s\n",opt[0]->token,opt[1]->token,opt[2]->token );
 				  INST = nouvinst(token, type, nbop, line, dec, opt);
           printf("inst\n");
 		 		  *collect_ins = enchaine(*collect_ins, INST);
