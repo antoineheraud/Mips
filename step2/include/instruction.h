@@ -11,7 +11,7 @@ enum typeop{
   IMMEDIATE, /*valeur entière sur 16 bits / # valeur signée sur 16 bits */
   SA,  /*valeur entière sur  5 bits */
   TARGET, /*adresse de saut sur 28 bits donc sans les 4 bits de poids fort*/
-  CHAINES,
+  ETIQ,
 };
 
 typedef enum typeop TYPEOPINST;
@@ -34,7 +34,7 @@ struct instructiontxt {
   int nbop; /* nombre d'opérandes*/
   int line; /*numéro de la ligne */
   int dec;  /* décalage ou adresse relative dans la section*/
-  OPINST opt[2];
+  OPINST* opt;
   struct instructiontxt* suiv; /* structure pour les opérandes*/
 };
 
