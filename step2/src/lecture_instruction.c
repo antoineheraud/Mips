@@ -62,12 +62,17 @@ LISTE lecture_instruction(char* token, char* type, int* pnbop, int* nline, int* 
 			nbop= 1+nbop;printf("nbop %d\n", nbop);
 			if(c->type == REG || c->type == HEX || c->type == DECIM || c->type == SYMB){ printf("w2\n");
 
-				if(c->type = REG){printf("REG\n");
+				if(c->type == SYMB){printf("SYMB\n");
+				strcpy(opi->token, c->obj);
+				opi->type = ETIQ;
+			}
+
+				if(c->type == REG){printf("REG\n");
 							strcpy(opi->token, c->obj);
 							opi->type = REGI;
 						}
 
-					else if(c->type = HEX){printf("HEX\n");
+					else if(c->type == HEX){printf("HEX\n");
 						if(!strcmp(dict[i].symbole, "ADDI") || !strcmp(dict[i].symbole, "LUI") || !strcmp(dict[i].symbole, "LI")){
 							strcpy(opi->token, c->obj);
 							opi->type = IMMEDIATE;
@@ -78,14 +83,15 @@ LISTE lecture_instruction(char* token, char* type, int* pnbop, int* nline, int* 
 							}
 						}
 
-					else if(c->type = DECIM){printf("DECIM\n");
+					else if(c->type == DECIM){printf("DECIM\n");
 						if(((LEXEM)l->suiv->val)->type == P_GAU){   /* endroit intéréssant*/
 							opi->type = BASE_OFFSET;
-							while(c->type != P_DROI){
+							while(c->type != P_DROI){ printf("P\n");
 								strcat(opi->token, c->obj);
 								l = l->suiv;
 								c = l->val;
 							}
+							strcat(opi->token, c->obj);
 						}
 						else if(!strcmp(dict[i].symbole, "ADDI") || !strcmp(dict[i].symbole, "LUI") || !strcmp(dict[i].symbole, "LI")){
 							strcpy(opi->token, c->obj);
@@ -101,6 +107,8 @@ LISTE lecture_instruction(char* token, char* type, int* pnbop, int* nline, int* 
 						printf("finw2\n");printf("nbop %d\n", nbop);
 						opt[nbop - 1] = opi;
 					} /* fin if reg/hex/decim */
+
+
 
 				if(nbop > dict[i].nb_op){
 					printf("Erreur d'incohérence de nombre d'opérandes à la ligne %d \n", *nline);
