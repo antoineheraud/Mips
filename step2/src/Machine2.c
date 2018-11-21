@@ -71,8 +71,12 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
 				else{printf("traitement\n");
           listlex=lecture_instruction(token, type, &nbop, &line, &dec, opt, listlex, dict, p_nb_inst);
           printf("lecture\n");
+          dec = 4;
           printf("%s %s %d %d %d\n",token,type,nbop,line,dec);
-          printf("%s %s %s\n",opt[0]->token,opt[1]->token,opt[2]->token );
+          for (i = 0;i<nbop;i++){
+            printf("%s ",opt[i]->token);
+          }
+          printf("\n");
 				  INST = nouvinst(token, type, nbop, line, dec, opt);
           printf("inst\n");
 		 		  *collect_ins = enchaine(*collect_ins, INST);
