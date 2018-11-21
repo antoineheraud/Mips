@@ -71,14 +71,34 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
 				else{printf("traitement\n");
           listlex=lecture_instruction(token, type, &nbop, &line, &dec, opt, listlex, dict, p_nb_inst);
           printf("lecture\n");
+          printf("%s \n",opt[2]->token);
           dec = 4;
+
+          /*control fonctionnement lecture_instruction */
           printf("%s %s %d %d %d\n",token,type,nbop,line,dec);
           for (i = 0;i<nbop;i++){
             printf("%s ",opt[i]->token);
           }
           printf("\n");
+          /* fin du control lecture_instruction */
+
 				  INST = nouvinst(token, type, nbop, line, dec, opt);
+          printf("op : %s\n",(INST->opt[2])->token);
           printf("inst\n");
+          /*control fonctionnement nouvinst */
+          printf("nbop : %d, line : %d, dec : %d\n", INST->nbop,INST->line,INST->dec);
+
+          printf("inst : %s\n",INST->obj);
+
+          for(i = 0; i<nbop;i++){printf("op : %s\n",(INST->opt[i])->token);
+          TYPEOPINST typeop = (INST->opt[i])->type;
+          if (typeop == REGI) printf("REGI\n");
+          if (typeop == ETIQ) printf("ETIQ\n");
+          if (typeop == SA) printf("SA\n");
+          if (typeop == IMMEDIATE) printf ("IMMEDIATE\n");
+        }
+          /* fin du control */
+
 		 		  *collect_ins = enchaine(*collect_ins, INST);
           printf("enchaine\n");
           }

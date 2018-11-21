@@ -16,7 +16,7 @@
 
 /* fonction qui crée une nouvelle cellule BSS */
 
-IT nouvinst(char* token, char* type, int nbop, int nline, int dec, OPINST opt[]){
+IT nouvinst(char* token, char* type, int nbop, int nline, int dec, OPINST* opt){
 	int i = 0;
 	IT lit = calloc(1,sizeof(*lit));
 	strcpy(lit->obj, token);
@@ -24,12 +24,13 @@ IT nouvinst(char* token, char* type, int nbop, int nline, int dec, OPINST opt[])
 	lit->nbop = nbop;
 	lit->line = nline;
 	lit->dec = dec;
-	for (i=0;i<nbop;i++){
+	/*for (i=0;i<nbop;i++){
 		OPINST opi = calloc(1,sizeof(*opi));
 		strcpy(opi->token, opt[i]-> token);
 		opi->type = opt[i]->type;
 		lit->opt[0] =  opi;
-	}
+	}*/
+	lit->opt = opt;
 	lit->suiv = NULL;
 	return lit;
 }
@@ -93,11 +94,11 @@ LISTE lecture_instruction(char* token, char* type, int* pnbop, int* nline, int* 
 							}
 							strcat(opi->token, c->obj);
 						}
-						else if(!strcmp(dict[i].symbole, "ADDI") || !strcmp(dict[i].symbole, "LUI") || !strcmp(dict[i].symbole, "LI")){
+						else if(!strcmp(dict[i].symbole, "addi") || !strcmp(dict[i].symbole, "lui") || !strcmp(dict[i].symbole, "li")){
 							strcpy(opi->token, c->obj);
 							opi->type = IMMEDIATE;
 							}
-						else if(!strcmp(dict[i].symbole, "ROTR") || !strcmp(dict[i].symbole, "SLL") || !strcmp(dict[i].symbole, "SRL")){
+						else if(!strcmp(dict[i].symbole, "rotr") || !strcmp(dict[i].symbole, "sll") || !strcmp(dict[i].symbole, "srl")){
 								strcpy(opi->token, c->obj);
 								opi->type = SA;
 								}
@@ -114,6 +115,7 @@ LISTE lecture_instruction(char* token, char* type, int* pnbop, int* nline, int* 
 					printf("Erreur d'incohérence de nombre d'opérandes à la ligne %d \n", *nline);
 					return NULL;}
 				printf (" hey\n");printf("%s\n",c->obj);
+			/*	strcpy(opi->token,c->obj);  */
 				l = l->suiv;
 				c = l->val;
 				if (!strcmp(c->obj, ",")){printf ("ouf\n");
@@ -128,4 +130,7 @@ LISTE lecture_instruction(char* token, char* type, int* pnbop, int* nline, int* 
 
 			};   /* fin du grand while */
 			*pnbop = nbop;
+
+
+		/*	opt[nbop+1] = opi; */
 			return l;}
