@@ -34,13 +34,16 @@ DATA nouvdata(char* data,char* type, int nbop, int line, int dec, OPDD operande)
 
 
 LISTE  lecture_data(char* data, char* type, int nbop, int line, int dec, OPDD operande, LISTE l){
-		LEXEM c = l->val;
-		if(strcmp(c->obj, ".byte") || strcmp(c->obj, ".word") || strcmp(c->obj, ".asciiz") || strcmp(c->obj, ".space")){
+		LEXEM c = l->val;printf("\n valeur de c->obj : %sT\n",c->obj);
+	/*	if(! !strcmp(c->obj, ".word ") || !strcmp(c->obj, ".asciiz ") || !strcmp(c->obj, ".space ")){ */
+		if (!strcmp(c->obj, ".word ")){
+
+			printf("lec_dt\n");
 			strcpy(data, c->obj);
 			line = c->nline;
 			strcpy(type, c->obj);
 			nbop = 0;
-			while(c->type != NL){
+			while(c->type != NL){printf("coucou\n");
 				if(c->type == HEX || c->type == DECIM){
 					nbop++;
 					strcpy(operande.token , c->obj);
@@ -55,5 +58,71 @@ LISTE  lecture_data(char* data, char* type, int nbop, int line, int dec, OPDD op
 				c = l->val;
 			}
 		}
+		if (!strcmp(c->obj, ".asciiz ")){
+			printf("lec_dt\n");
+			strcpy(data, c->obj);
+			line = c->nline;
+			strcpy(type, c->obj);
+			nbop = 0;
+			while(c->type != NL){printf("coucou\n");
+				if(c->type == HEX || c->type == DECIM){
+					nbop++;
+					strcpy(operande.token , c->obj);
+					operande.type = INT_DD;
+				}
+				if(c->type == SYMB){
+					nbop++;
+					strcpy(operande.token , c->obj);
+					operande.type = SYMB_DD;
+				}
+				l = l->suiv;
+				c = l->val;
+			}
+		}
+		if (!strcmp(c->obj, ".space ")){
+			printf("lec_dt\n");
+			strcpy(data, c->obj);
+			line = c->nline;
+			strcpy(type, c->obj);
+			nbop = 0;
+			while(c->type != NL){printf("coucou\n");
+				if(c->type == HEX || c->type == DECIM){
+					nbop++;
+					strcpy(operande.token , c->obj);
+					operande.type = INT_DD;
+				}
+				if(c->type == SYMB){
+					nbop++;
+					strcpy(operande.token , c->obj);
+					operande.type = SYMB_DD;
+				}
+				l = l->suiv;
+				c = l->val;
+			}
+		}
+		if (!strcmp(c->obj, ".byte ")){
+			printf("lec_dt\n");
+			strcpy(data, c->obj);
+			line = c->nline;
+			strcpy(type, c->obj);
+			nbop = 0;
+			while(c->type != NL){printf("coucou\n");
+				if(c->type == HEX || c->type == DECIM){
+					nbop++;
+					strcpy(operande.token , c->obj);
+					operande.type = INT_DD;
+				}
+				if(c->type == SYMB){
+					nbop++;
+					strcpy(operande.token , c->obj);
+					operande.type = SYMB_DD;
+				}
+				l = l->suiv;
+				c = l->val;
+			}
+		}
+
+
+
 		return l;
 }
