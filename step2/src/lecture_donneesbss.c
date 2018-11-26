@@ -33,12 +33,13 @@ BSS nouvbss(char* bss, char* type, int nbop, int line, int dec,int valeur){
 
 LISTE lecture_bss(char* bss, char* type, int nbop, int line, int dec, int valeur, LISTE l){
 		LEXEM c = l->val;
-		if(strcmp(c->obj, ".space")){
+		if(strcmp(c->obj, ".space")){printf("LOL\n");
 			strcpy(bss, c->obj);
 			line = c->nline;
 			strcpy(type, c->obj);
 			nbop = 0;
-			while(c->type != NL){
+			printf("1\n");
+			while(c->type != NL){printf("bouc\n");
 				if(c->type == HEX || c->type == DECIM){
 					nbop++;
 					valeur = atoi(c->obj);
@@ -47,5 +48,6 @@ LISTE lecture_bss(char* bss, char* type, int nbop, int line, int dec, int valeur
 				c = l->val;
 			}
 		}
+		printf("end\n");
 		return l;
 }
