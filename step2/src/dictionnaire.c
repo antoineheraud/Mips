@@ -23,7 +23,7 @@
  stocke le nb d'instructions dans *p_nb_inst */
 void lect_dico_int(char* nomFichierDico, int* p_nb_inst,pinst_def_t* dict){
 	FILE* f1 = NULL;
-    int i;int j;
+    int i; int j; int k;
 	char s1[STRLEN];
 
 
@@ -55,6 +55,11 @@ void lect_dico_int(char* nomFichierDico, int* p_nb_inst,pinst_def_t* dict){
 		fscanf(f1, "%d",&tab[i].nb_op); /* printf("%d\n",tab[i].nb_op); */
 
 		for (j = 0; tab[i].symbole[j];j++)  tab[i].symbole[j] = tolower(tab[i].symbole[j]);
+		
+		tab[i].types = calloc(tab[i].nb_op, sizeof(char));
+		for(k=0; k<tab[i].nb_op; k++){
+			tab[i].types[k] = calloc(16, sizeof(char));
+			fscanf(f1, "%s", tab[i].types[k]);}
 
 		/*strcpy(tab[i].symbole,s1);*/
 		/*(tab[i].symbole)=strdupa(s1); on ne peut pas utiliser strdupa car
