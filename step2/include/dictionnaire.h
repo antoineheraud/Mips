@@ -10,7 +10,8 @@
 
 
 
-typedef struct{	char symbole[STRLEN];
+typedef struct{
+				char symbole[STRLEN];
 				char type[STRLEN];
 				int nb_op;} inst_def_t;
 

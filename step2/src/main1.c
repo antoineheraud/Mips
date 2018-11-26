@@ -119,6 +119,8 @@ int main ( int argc, char *argv[] ) {
     LISTE* pcollect_data = &collect_data;
     LISTE collect_bss;
     LISTE* pcollect_bss = &collect_bss ;
+    LISTE collect_symb;
+    LISTE* pcollect_symb = &collect_symb;
 
     inst_def_t* dict;
     pinst_def_t* pdict = &dict;
@@ -136,13 +138,14 @@ int main ( int argc, char *argv[] ) {
   	}
     printf("Début Machine 2\n");
     if( !strcmp(dict[27].symbole, "LI")) printf("Good\n");
-    machine_etat_2(listlex, pcollect_ins,  pcollect_data, pcollect_bss, dict,  &nb_inst);
+    machine_etat_2(listlex, pcollect_ins,  pcollect_data, pcollect_bss, pcollect_symb, dict,  &nb_inst);
 
 
 
     printL(listlex);
+    printf("FIN\n");
 /* test collection instructions */
-    LISTE lb = nouvliste();
+  /*  LISTE lb = nouvliste();
 
       IT lit = calloc(1,sizeof(*lit));
 
@@ -170,7 +173,7 @@ int main ( int argc, char *argv[] ) {
 
       printf("inst : %s\n",lit->obj);
 
-      printf("op : %s\n",(lit->opt[1])->token);
+      printf("op : %s\n",(lit->opt[1])->token);*/
 /* fin test collection instructions */
 
 

@@ -19,7 +19,7 @@
 #include "dictionnaire.h"
 
 
-void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LISTE* collect_bss,inst_def_t* dict, int* p_nb_inst);
+void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LISTE* collect_bss,LISTE* collect_symb,inst_def_t* dict, int* p_nb_inst);
 
 
 
