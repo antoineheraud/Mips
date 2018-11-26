@@ -51,7 +51,7 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
     int i = 0;
 
     printf("mach\n");
-    while(l1 != NULL){     printf("%s\n",c->obj);printtype(c->type);
+    while(l1 != NULL){     printf("%sT\n",c->obj);printtype(c->type);
     	switch(S){
     	    case INIT:
               printf("init\n");
@@ -65,7 +65,7 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
 			case TEXT:printf("Text\n");printf("%s\n",c->obj);
       /* fonction pour passer le token en minuscule */
         for (i = 0; c->obj[i];i++)  c->obj[i] = tolower(c->obj[i]);
-
+        printf("%s\n",c->obj);
 
 				if(!strcmp(c->obj, ".data")){ S = DATA1;printf("1if\n");}
 
@@ -143,7 +143,7 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
 				listlex = lecture_bss(bss, type, nbop, line, dec, valeur, listlex);
         printf("nouv\n");
 				BS = nouvbss(bss, type, nbop, line, dec, valeur);
-        printf("entete\n");
+
 		 		(*collect_bss) = entete((*collect_bss), BS);}
         printf("entete\n");
 		 		break;
@@ -151,10 +151,10 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
 
 		}
     listlex = listlex->suiv;
-    printf("entete\n");
+
 		if (listlex == NULL) break;
     c = listlex->val;
-    printf("entete5\n");
+
     l1 = listlex->suiv;
     if (l1 != NULL)  c1 = l1 ->val;
     printf("%s\n",c->obj);printtype(c->type);

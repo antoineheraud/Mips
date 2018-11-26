@@ -1,4 +1,4 @@
-31
+32
 ADD R 3
 ADDI I 3
 SUB R 3
@@ -18,6 +18,7 @@ MFHI J 1
 MFLO J 1
 BEQ R 3
 BNE R 3
+LI P 2
 BGTZ R 2
 BLEZ R 2
 J J 1
@@ -29,4 +30,4 @@ NOP P 0
 BLT P 3
 LW P 2
 SW P 2
-LI P 2
+ADD R 3
