@@ -21,6 +21,10 @@
 #include "lecture.h"
 #include "dictionnaire.h"
 #include "machine2.h"
+#include "test_operandes.h"
+#include "table_de_relocation.h"
+
+//#include "table_de_relocation.h"
 
 /**
  * @param exec Name of executable.
