@@ -14,6 +14,7 @@
 #include <donneesbss.h>
 #include <tablesymb.h>*/
 typedef enum type TYPE_L;
+typedef enum typeop TYPEOPINST;
 
 struct cellule {
 	void* val;
@@ -25,11 +26,15 @@ LISTE nouvliste();
 int listevide(LISTE l);
 /*LISTE enqueue(void* p,LISTE l);*/
 LISTE entete(LISTE l, void* val);
-void printL(LISTE l );
+void printLex(LISTE l );
 /*IT nouvinst(char* token, int nbop, int nline, int dec,OPINST* opt);*/
 LISTE enchaine(LISTE l, void* val );
 void reverse(LISTE *l);
 void printtype(TYPE_L type);
-
-
+void printLINST(LISTE l);
+void printtypeI(TYPEOPINST type);
+void PrintLdata(LISTE l);
+void printtypeDA(TYPOPDATA type);
+void PrintLbss(LISTE l);
+void printtypeBS(TYPOPDATA type);
 #endif /* _LISTE_H_ */

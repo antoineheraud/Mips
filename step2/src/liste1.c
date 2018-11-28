@@ -4,14 +4,16 @@
 #include <string.h>
 
 
-#include <global.h>
-#include <notify.h>
-#include <lex.h>
-#include <liste.h>
-#include <instruction.h>
-#include <donneesdata.h>
-#include <donneesbss.h>
-#include <tablesymb.h>
+#include "global.h"
+#include "notify.h"
+#include "lex.h"
+#include "liste.h"
+#include "instruction.h"
+#include "donneesdata.h"
+#include "donneesbss.h"
+#include "tablesymb.h"
+
+typedef enum typeopdd TYPOPDATA;
 
 LISTE nouvliste(){ return NULL;}
 
@@ -84,7 +86,7 @@ DATA nouvdata(char* type, int nbop, int line, int dec, char* optoken, TYPOP type
 }
 */
 
-void printL(LISTE l ){
+void printLex(LISTE l ){
 
 
 	LEXEM nlex;
@@ -116,6 +118,92 @@ void printtype(TYPE_L type){
 	if (type == NL) printf("NOUVELLE LIGNE\n" );
 }
 
+void printLINST(LISTE l){
+	IT ninst = l->val ;
+	int i = 0;
+	while (l != NULL){
+		ninst = l->val;
+		;
+		printf("%s \nnuméro de ligne %d \nnombre op : %d\ndécalage %d\n",ninst->obj,ninst->line, ninst->nbop,ninst->dec);
+		printf("type instruction %s\n",ninst->type);
+		if ( ninst->nbop>0){
+			printf("op 1 : %s\n",(ninst->opt1)->token);
+			TYPEOPINST typeop = (ninst->opt1)->type;
+			printf("type  ");
+			printtypeI(typeop);
+		}
+		if ( ninst->nbop>1){
+			printf("op 12: %s\n",(ninst->opt2)->token);
+			TYPEOPINST typeop = (ninst->opt2)->type;
+			printf("type  ");
+			printtypeI(typeop);
+		}
+		if ( ninst->nbop>2){
+			printf("op 3 : %s\n",(ninst->opt3)->token);
+			TYPEOPINST typeop = (ninst->opt3)->type;
+			printf("type  ");
+			printtypeI(typeop);
+			}
+
+		l = l->suiv;
+	}
+	printf("NULL\n");
+}
+
+void printtypeI(TYPEOPINST type){
+	if (type == REGI) printf("REGI \n");
+	if (type == BASE_OFFSET) printf("BASE_OFFSET \n");
+	if (type == IMMEDIATE) printf("IMMEDIATE \n");
+	if (type == SA) printf("SA \n");
+	if (type == TARGET) printf("TARGET \n");
+	if (type == ETIQ) printf("ETIQ \n");
+
+}
+
+void PrintLdata(LISTE l){
+	DATA nouvdata = l->val;
+	int i = 0;
+	while (l!=NULL){
+		nouvdata = l->val;
+		printf("\n %s \n",nouvdata->data);
+	/*	printf("type : %s \n",nouvdata->type);*/
+		printf("line : %d \n",nouvdata->line);
+		printf("nbop : %d \n",nouvdata->nbop);
+		printf("decalage : %d \n",nouvdata->dec);
+		printf(" opérande : %s \ntype :",(nouvdata->operande)->token);
+		printtypeDA((nouvdata->operande)->type);
+		l=l->suiv;
+	}
+
+}
+
+void printtypeDA(TYPOPDATA type){
+	if (type == CHAR_DD) printf("CHAR_DD \n");
+	if (type == INT_DD) printf("INT_DD \n");
+	if (type == UNSIGNED_INT_DD) printf("UNSIGNED_INT_DD \n");
+	if (type == CHAIN_DD) printf("CHAIN_DD \n");
+	if (type == SYMB_DD) printf("SYMB_DD \n");
+}
+void PrintLbss(LISTE l){
+	BSS nouvbss = l->val;
+	int i = 0;
+	while (l!=NULL){
+		nouvbss = l->val;
+		printf("\n %s \n",nouvbss->bss);
+	/*	printf("type : %s \n",nouvbss->type);*/
+		printf("line : %d \n",nouvbss->line);
+		printf("nbop : %d \n",nouvbss->nbop);
+		printf("decalage : %d \n",nouvbss->dec);
+		printf("valeur : %d\n",nouvbss->valeur);
+		l=l->suiv;
+	}
+
+}
+
+void printtypeBS(TYPOPDATA type){
+	if (type == DEC_BSS) printf("DEC_BSS \n");
+	if (type == HEX_BSS) printf("HEX_BSS\n");
+}
 void reverse(LISTE *l){
 	LISTE inv = *l, tete;
 	if (inv && inv->suiv){

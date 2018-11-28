@@ -17,10 +17,10 @@
 
 /* fonction qui crée une nouvelle cellule BSS */
 
-DATA nouvdata(char* data,char* type, int nbop, int line, int dec, OPDD operande){
+DATA nouvdata(char* data,/*char* type,*/ int nbop, int line, int dec, OPDD operande){
 	DATA ldata = calloc(1,sizeof(*ldata));
 	strcpy(ldata->data, data);
-	strcpy(ldata->type, type);
+/*	strcpy(ldata->type, type); */
 	ldata->nbop = nbop;
 	ldata->line = line;
 	ldata->dec = dec;
@@ -33,26 +33,28 @@ DATA nouvdata(char* data,char* type, int nbop, int line, int dec, OPDD operande)
 
 
 
-LISTE  lecture_data(char* data, char* type, int nbop, int line, int dec, OPDD operande, LISTE l){
+LISTE  lecture_data(char* data,/* char* type,*/ int* nbop, int* line, int* dec, OPDD operande, LISTE l){
 		LEXEM c = l->val;printf("\n valeur de c->obj : %sT\n",c->obj);
 	/*	if(! !strcmp(c->obj, ".word ") || !strcmp(c->obj, ".asciiz ") || !strcmp(c->obj, ".space ")){ */
 		if (!strcmp(c->obj, ".word ")){
 
 			printf("lec_dt\n");
 			strcpy(data, c->obj);
-			line = c->nline;
-			strcpy(type, c->obj);
-			nbop = 0;
+			*line = c->nline;
+			printf("why?");
+			*dec = ((*dec%4)+1)*4;
+		/*	strcpy(type, c->obj);*/
+			*nbop = 0;
 			while(c->type != NL){printf("coucou\n");
 				if(c->type == HEX || c->type == DECIM){
-					nbop++;
-					strcpy(operande.token , c->obj);
-					operande.type = INT_DD;
+					*nbop = *nbop +1;
+					strcpy(operande->token , c->obj);
+					operande->type = INT_DD;
 				}
 				if(c->type == SYMB){
-					nbop++;
-					strcpy(operande.token , c->obj);
-					operande.type = SYMB_DD;
+					*nbop = *nbop +1;
+					strcpy(operande->token , c->obj);
+					operande->type = SYMB_DD;
 				}
 				l = l->suiv;
 				c = l->val;
@@ -61,19 +63,28 @@ LISTE  lecture_data(char* data, char* type, int nbop, int line, int dec, OPDD op
 		if (!strcmp(c->obj, ".asciiz ")){
 			printf("lec_dt\n");
 			strcpy(data, c->obj);
-			line = c->nline;
-			strcpy(type, c->obj);
-			nbop = 0;
+			*line = c->nline;
+			int taille = strlen(c->obj);
+
+			*dec = *dec + taille;
+			printf("taille : %d\n",taille);
+		/*	strcpy(type, c->obj); */
+			*nbop = 0;
 			while(c->type != NL){printf("coucou\n");
 				if(c->type == HEX || c->type == DECIM){
-					nbop++;
-					strcpy(operande.token , c->obj);
-					operande.type = INT_DD;
+					*nbop = *nbop +1;
+					strcpy(operande->token , c->obj);
+					operande->type = INT_DD;
 				}
 				if(c->type == SYMB){
-					nbop++;
-					strcpy(operande.token , c->obj);
-					operande.type = SYMB_DD;
+					*nbop = *nbop +1;
+					strcpy(operande->token , c->obj);
+					operande->type = SYMB_DD;
+				}
+				if(c->type == CHAIN){
+					*nbop = *nbop +1;
+					strcpy(operande->token , c->obj);
+					operande->type = CHAIN_DD;
 				}
 				l = l->suiv;
 				c = l->val;
@@ -83,18 +94,18 @@ LISTE  lecture_data(char* data, char* type, int nbop, int line, int dec, OPDD op
 			printf("lec_dt\n");
 			strcpy(data, c->obj);
 			line = c->nline;
-			strcpy(type, c->obj);
-			nbop = 0;
+		/*	strcpy(type, c->obj);*/
+			*nbop = 0;
 			while(c->type != NL){printf("coucou\n");
 				if(c->type == HEX || c->type == DECIM){
-					nbop++;
-					strcpy(operande.token , c->obj);
-					operande.type = INT_DD;
+					*nbop = *nbop +1;
+					strcpy(operande->token , c->obj);
+					operande->type = INT_DD;
 				}
 				if(c->type == SYMB){
-					nbop++;
-					strcpy(operande.token , c->obj);
-					operande.type = SYMB_DD;
+					*nbop = *nbop +1;
+					strcpy(operande->token , c->obj);
+					operande->type = SYMB_DD;
 				}
 				l = l->suiv;
 				c = l->val;
@@ -104,18 +115,19 @@ LISTE  lecture_data(char* data, char* type, int nbop, int line, int dec, OPDD op
 			printf("lec_dt\n");
 			strcpy(data, c->obj);
 			line = c->nline;
-			strcpy(type, c->obj);
-			nbop = 0;
+			*dec = *dec + 1;
+	/*		strcpy(type, c->obj); */
+			*nbop = 0;
 			while(c->type != NL){printf("coucou\n");
 				if(c->type == HEX || c->type == DECIM){
-					nbop++;
-					strcpy(operande.token , c->obj);
-					operande.type = INT_DD;
+					*nbop = *nbop +1;
+					strcpy(operande->token , c->obj);
+					operande->type = INT_DD;
 				}
 				if(c->type == SYMB){
-					nbop++;
-					strcpy(operande.token , c->obj);
-					operande.type = SYMB_DD;
+					*nbop = *nbop +1;
+					strcpy(operande->token , c->obj);
+					operande->type = SYMB_DD;
 				}
 				l = l->suiv;
 				c = l->val;

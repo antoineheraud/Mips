@@ -10,7 +10,7 @@ enum typeopdd {
   INT_DD,
   UNSIGNED_INT_DD,
   CHAIN_DD,
-  SYMB_DD
+  SYMB_DD,
 };
 
 typedef enum typeopdd TYPOPDATA;
@@ -20,11 +20,11 @@ struct operandedd {
   TYPOPDATA type; /*Soit DEC soit DECIM soit CHAIN (pour l'instant on n'a pas les binaires) */
 };
 
-typedef struct operandedd OPDD;
+typedef struct operandedd* OPDD;
 
 struct datadonnees {
   char data[STRLEN];/*mettre le token du lexeme type de données exemple .word*/
-  char type[STRLEN];
+/*  char type[STRLEN]; */
   int nbop; /* nombre d'opérandes*/
   int line; /*numéro de la ligne */
   int dec;  /* décalage ou adresse relative dans la section*/

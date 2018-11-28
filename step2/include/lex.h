@@ -12,6 +12,7 @@
 
 
 #include <stdio.h>
+#include "donneesdata.h"
 #include "liste.h"
 
 enum type{
