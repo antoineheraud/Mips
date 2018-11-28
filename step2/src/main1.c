@@ -108,18 +108,18 @@ int main ( int argc, char *argv[] ) {
     DEBUG_MSG("source code got %d lines",nlines);
     printf("\n\n\n\n\n");
     reverse(plistlex);
-    printL(listlex);
+    printLex(listlex);
 
     /* end lexical analysis */
 
     /* Incrément 2 machine à état non fonctionnelle */
-    LISTE collect_ins;
+    LISTE collect_ins=NULL;
     LISTE* pcollect_ins = &collect_ins;
-    LISTE collect_data;
+    LISTE collect_data=NULL;
     LISTE* pcollect_data = &collect_data;
-    LISTE collect_bss;
+    LISTE collect_bss=NULL;
     LISTE* pcollect_bss = &collect_bss ;
-    LISTE collect_symb;
+    LISTE collect_symb=NULL;
     LISTE* pcollect_symb = &collect_symb;
 
     inst_def_t* dict;
@@ -139,10 +139,22 @@ int main ( int argc, char *argv[] ) {
     printf("Début Machine 2\n");
     if( !strcmp(dict[27].symbole, "LI")) printf("Good\n");
     machine_etat_2(listlex, pcollect_ins,  pcollect_data, pcollect_bss, pcollect_symb, dict,  &nb_inst);
+    printf("\nfinmachine à état\n\n");
+    reverse(pcollect_ins);
+    printf("reverse\n");
+    printLINST(collect_ins);
+
+    printf("FIN\n");
+    reverse(pcollect_data);
+    printf("reverse\n");
+    PrintLdata(collect_data);
+    printf("FIN\n");
+    reverse(pcollect_bss);
+    printf("reverse\n");
+    PrintLbss(collect_bss);
 
 
-
-    printL(listlex);
+/*    printLex(listlex); */
     printf("FIN\n");
 /* test collection instructions */
   /*  LISTE lb = nouvliste();

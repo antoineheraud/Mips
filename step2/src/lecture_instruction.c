@@ -15,8 +15,11 @@
 
 
 /* fonction qui crée une nouvelle cellule BSS */
-
-IT nouvinst(char* token, char* type, int nbop, int nline, int dec, OPINST* opt){
+OPINST* nouvopt(){
+	OPINST* op = calloc(STRLEN,sizeof(*op));
+	return op;
+}
+IT nouvinst(char* token, char* type, int nbop, int nline, int dec, OPINST* opt1,OPINST* opt2,OPINST* opt3){
 	int i = 0;
 	IT lit = calloc(1,sizeof(*lit));
 	strcpy(lit->obj, token);
@@ -30,24 +33,29 @@ IT nouvinst(char* token, char* type, int nbop, int nline, int dec, OPINST* opt){
 		opi->type = opt[i]->type;
 		lit->opt[0] =  opi;
 	}*/
-	lit->opt = opt;
+	lit->opt1 = opt1;
+	lit->opt2 = opt2;
+	lit->opt3 = opt3;
 	lit->suiv = NULL;
 	return lit;
 }
 
 
-LISTE lecture_instruction(char* token, char* type, int* pnbop, int* nline, int* dec, OPINST* opt, LISTE l, inst_def_t* dict, int* p_nb_inst){
+LISTE lecture_instruction(char* token, char* type, int* pnbop, int* nline, int* dec, OPINST* opt1,OPINST* opt2,OPINST* opt3, LISTE l, inst_def_t* dict, int* p_nb_inst){
 		LEXEM c = l->val;
+		OPINST* opt = calloc(3,sizeof(*opt));
 		int nb_opm;int j;int nbop;
 		printf("lec_it\n");
+		printf("%s\n",c->obj);
 		OPINST opi = calloc(1,sizeof(*opi));
 		int i;
+		nbop = 0;
 		printf("%d\n",*p_nb_inst);
 		for(i=0; i< *p_nb_inst; i++){/*printf("boucle1\n");printf("%s\n",c->obj);printf("%s\n", dict[i].symbole);*/
 			if(!strcmp(c->obj, dict[i].symbole)){printf("if1\n");
 				strcpy(token, c->obj);
 				*nline = c->nline;
-				strcpy(type, "SYMB");
+				strcpy(type, dict[i].type);
 				/* nbop = dict[i].nb_op*/
 				*dec = *dec + 4;
 				nb_opm = dict[i].nb_op;
@@ -132,7 +140,16 @@ LISTE lecture_instruction(char* token, char* type, int* pnbop, int* nline, int* 
 
 			};   /* fin du grand while */
 			*pnbop = nbop;
+			printf("%p",*opt2);
+			printf("valeur opt[1] %s\n", opt[0]->token);
+			*opt1 = opt[0];
 
+			printf("valeur opt[1] %s\n", (*opt1)->token);
+
+			*opt2 = opt[1];
+			printf("valeur opt[2] %s\n", (*opt2)->token);
+			*opt3 = opt[2];
+			printf("valeur opt[3] %s\n", (*opt3)->token);
 
 		/*	opt[nbop+1] = opi; */
 			return l;}

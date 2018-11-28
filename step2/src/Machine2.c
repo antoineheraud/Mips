@@ -31,9 +31,10 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
     char type[STRLEN];
     int nbop;
     int line;
-    int dec;
+    int dec = 0;
+    int decb = 0;
     /* parametres de la collection d'instruction*/
-    OPINST opt[STRLEN];
+
 
     IT INST;
 
@@ -51,7 +52,7 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
     int i = 0;
 
     printf("mach\n");
-    while(l1 != NULL){     printf("%sT\n",c->obj);printtype(c->type);
+    while(l1 != NULL){     printf("%s\n",c->obj);printtype(c->type);
     	switch(S){
     	    case INIT:
               printf("init\n");
@@ -63,6 +64,8 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
     	        break;
 
 			case TEXT:printf("Text\n");printf("%s\n",c->obj);
+
+
       /* fonction pour passer le token en minuscule */
         for (i = 0; c->obj[i];i++)  c->obj[i] = tolower(c->obj[i]);
         printf("%s\n",c->obj);
@@ -77,72 +80,97 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
           listlex = listlex->suiv;
         }
 				else{printf("traitement\n");
-          listlex=lecture_instruction(token, type, &nbop, &line, &dec, opt, listlex, dict, p_nb_inst);
-          printf("lecture\n");
-          printf("%s \n",opt[2]->token);
-          dec = 4;
+          OPINST opt1 = calloc(1,sizeof(*opt1)); printf("%p\n",opt1);
+          OPINST opt2 = calloc(1,sizeof(*opt2));printf("%p\n",opt2);
+          OPINST opt3 = calloc(1,sizeof(*opt3));printf("%p\n",opt3);printf("%p\n",&opt3);
 
+          listlex=lecture_instruction(token, type, &nbop, &line, &dec, &opt1,&opt2,&opt3, listlex, dict, p_nb_inst);
+          printf("lecture\n");
+          /*printf("%s \n",opt[0].token);*/
+          /*printf("%s\n",(opt1)->token);*/
           /*control fonctionnement lecture_instruction */
           printf("%s %s %d %d %d\n",token,type,nbop,line,dec);
-          for (i = 0;i<nbop;i++){
-            printf("%s ",opt[i]->token);
-          }
-          printf("\n");
-          /* fin du control lecture_instruction */
 
-				  INST = nouvinst(token, type, nbop, line, dec, opt);
-          printf("op : %s\n",(INST->opt[2])->token);
+
+				  INST = nouvinst(token, type, nbop, line, dec, opt1,opt2,opt3);
+          printf("op : %s\n",(INST->opt1)->token);
           printf("inst\n");
           /*control fonctionnement nouvinst */
           printf("nbop : %d, line : %d, dec : %d\n", INST->nbop,INST->line,INST->dec);
 
           printf("inst : %s\n",INST->obj);
+          if (nbop>0){
+          printf("op : %s\n",(INST->opt1)->token);
+          TYPEOPINST typeop = (INST->opt1)->type;
+          printtypeI(typeop);
+          }
+          if (nbop>1){
+          printf("op : %s\n",(INST->opt2)->token);
+          TYPEOPINST typeop = (INST->opt2)->type;
+          if (typeop == REGI) printf("REGI\n");
+          if (typeop == ETIQ) printf("ETIQ\n");
+          if (typeop == SA) printf("SA\n");
+          if (typeop == IMMEDIATE) printf ("IMMEDIATE\n");}
 
-          for(i = 0; i<nbop;i++){printf("op : %s\n",(INST->opt[i])->token);
+          if(nbop>2){
+          printf("op : %s\n",(INST->opt2)->token);
+          TYPEOPINST typeop = (INST->opt2)->type;
+          if (typeop == REGI) printf("REGI\n");
+          if (typeop == ETIQ) printf("ETIQ\n");
+          if (typeop == SA) printf("SA\n");
+          if (typeop == IMMEDIATE) printf ("IMMEDIATE\n");}
+
+          /* fin du control */
+
+		 		  *collect_ins = entete(*collect_ins, INST);
+          printf("entete\n");
+        /*  for(i = 0; i<nbop;i++){printf("op : %s\n",(INST->opt[i])->token);
           TYPEOPINST typeop = (INST->opt[i])->type;
           if (typeop == REGI) printf("REGI\n");
           if (typeop == ETIQ) printf("ETIQ\n");
           if (typeop == SA) printf("SA\n");
           if (typeop == IMMEDIATE) printf ("IMMEDIATE\n");
-        }
-          /* fin du control */
-
-		 		  *collect_ins = entete(*collect_ins, INST);
-          printf("entete\n");
+        }*/
           }
 
 		 		 break;
 
 		 	case DATA1:printf("data1\n");printf("%s\n",c->obj);
+        for (i = 0; c->obj[i];i++)  c->obj[i] = tolower(c->obj[i]);
+        printf("%s\n",c->obj);
 		 		if(!strcmp(c->obj, ".text")) S = TEXT;
 				else if(!strcmp(c->obj, ".bss")) S = BSS1;
         else if(!strcmp(c->obj, "\0")) {printf("nl\n");break;}
         else if(!strcmp(c1->obj, ":")) {
           printf("eti\n" );
-          lecture_etiquette(token, type, &line, &dec, ".text",collect_symb);
+          lecture_etiquette(token,type, &line, &decb, ".data",collect_symb);
           listlex = listlex->suiv;
         }
 		 		else{printf("traitement\n");
+        OPDD operande = calloc(1,sizeof(*operande));
         if (!strcmp(c->obj, ".word")){ printf("OUF");}
-		 		listlex= lecture_data(data, type, nbop, line, dec, operande, listlex);
+		 		listlex= lecture_data(data,/* type,*/ &nbop, &line, &decb, operande, listlex);
         printf("pff");
-				DT = nouvdata(data, type, nbop, line, dec, operande);
+				DT = nouvdata(data, /*type,*/ nbop, line, decb, operande);
 		 		*(collect_data) = entete(*(collect_data), DT);}
 		 		break;
 
 		 	case BSS1:printf("bss1\n");printf("%s\n",c->obj);
+        for (i = 0; c->obj[i];i++)  c->obj[i] = tolower(c->obj[i]);
+        printf("%s\n",c->obj);
 		 		if(!strcmp(c->obj, ".text")) S = TEXT;
 				else if(!strcmp(c->obj, ".data")) S = DATA1;
         else if(!strcmp(c->obj, "\0")) {printf("nl\n");break;}
         else if(!strcmp(c1->obj, ":")) {
           printf("nul\n" );
-          lecture_etiquette(token, type, &line, &dec, ".text",collect_symb);
+          lecture_etiquette(token, type, &line, &dec, ".bss",collect_symb);
           listlex = listlex->suiv;
         }
 				else{
-				listlex = lecture_bss(bss, type, nbop, line, dec, valeur, listlex);
+        BSS BS = calloc(1,sizeof(*BS));
+				listlex = lecture_bss(bss, /*type,*/ &nbop, &line, &dec, &valeur, listlex);
         printf("nouv\n");
-				BS = nouvbss(bss, type, nbop, line, dec, valeur);
+				BS = nouvbss(bss, /*type,*/ nbop, line, dec, valeur);
 
 		 		(*collect_bss) = entete((*collect_bss), BS);}
         printf("entete\n");
