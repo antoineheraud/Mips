@@ -37,4 +37,5 @@ void PrintLdata(LISTE l);
 void printtypeDA(TYPOPDATA type);
 void PrintLbss(LISTE l);
 void printtypeBS(TYPOPDATA type);
+void print_etiquette(LISTE l);
 #endif /* _LISTE_H_ */

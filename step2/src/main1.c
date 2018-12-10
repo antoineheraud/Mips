@@ -68,6 +68,7 @@ int main ( int argc, char *argv[] ) {
     unsigned int 	nlines 	= 0;
     char         	 *file 	= NULL;
     int i;
+    int j;
 
 
     /* exemples d'utilisation des macros du fichier notify.h */
@@ -123,22 +124,36 @@ int main ( int argc, char *argv[] ) {
     LISTE* pcollect_symb = &collect_symb;
 
     inst_def_t* dict;
-    pinst_def_t* pdict = &dict;
+    inst_def_t** pdict = &dict;
+    psinst_def_t* pseudo_dict;
+    psinst_def_t** p_pseudo_dict = &pseudo_dict;
 
     int nb_inst;
-    lect_dico_int("./dic.txt", &nb_inst, pdict);printf("pff\n");
-    printf("nombre op %d\n ", nb_inst);
+    int nb_pseudo_inst;
+    printf("lect dico\n" );
+    lect_dico_int("./dic.txt", &nb_inst, pdict);
+    printf("lect pseudo dico\n" );
+    lect_pseudo_dic("./pseudo_dict.txt", &nb_pseudo_inst, p_pseudo_dict);
+    printf("nombre de op %d\n ", nb_inst);
+   for (i = 0;i<nb_pseudo_inst;i++) {
+  		printf("%s\n",pseudo_dict[i].type);
+  		printf("%s\n", pseudo_dict[i].symbole);
+  		printf("%d\n",pseudo_dict[i].nb_op);
+  	}
     printf("\n\n\n\n");
-  	for (i = 0;i<nb_inst;i++) {
+    for (i = 0;i<nb_inst;i++) {
       printf("%s\n", dict[i].symbole);
 
-  		printf("%s\n",dict[i].type);
+      printf("%s\n",dict[i].type);
 
-  		printf("%d\n",dict[i].nb_op);
-  	}
+      printf("%d\n",dict[i].nb_op);
+      for (j = 0;j<dict[i].nb_op;j++) {
+        printf("%s\n",dict[i].types[j]);
+      }
+    }
     printf("Début Machine 2\n");
     if( !strcmp(dict[27].symbole, "LI")) printf("Good\n");
-    machine_etat_2(listlex, pcollect_ins,  pcollect_data, pcollect_bss, pcollect_symb, dict,  &nb_inst);
+    machine_etat_2(listlex, pcollect_ins,  pcollect_data, pcollect_bss, pcollect_symb, dict,  &nb_inst, pseudo_dict, &nb_pseudo_inst);
     printf("\nfinmachine à état\n\n");
     reverse(pcollect_ins);
     printf("reverse\n");
@@ -152,6 +167,22 @@ int main ( int argc, char *argv[] ) {
     reverse(pcollect_bss);
     printf("reverse\n");
     PrintLbss(collect_bss);
+    reverse(pcollect_symb);
+    printf("reverse\n");
+    print_etiquette(collect_symb);
+    /*for (i = 0;i<nb_pseudo_inst;i++) {
+      printf("%s\n", pseudo_dict[i].symbole);
+
+      printf("%s\n",pseudo_dict[i].type);
+
+      printf("%d\n",pseudo_dict[i].nb_op);
+      for (j = 0;j<pseudo_dict[i].nb_op;j++) {
+        printf("%s\n",pseudo_dict[i].types[j]);
+      }
+    }
+    */
+
+
 
 
 /*    printLex(listlex); */

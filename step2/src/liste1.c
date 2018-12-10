@@ -200,6 +200,19 @@ void PrintLbss(LISTE l){
 
 }
 
+void print_etiquette(LISTE l){
+	TS nouvts = l->val;
+	while(l!=NULL){
+		nouvts = l->val;
+		printf("\n%s\n", nouvts->etiq);
+		printf("type : %s\n",nouvts->type );
+		printf("line : %d\n",nouvts->line );
+		printf("section : %s\n",nouvts->section );
+		printf("décalage : %d\n",nouvts->dec );
+		l=l->suiv;
+	}
+}
+
 void printtypeBS(TYPOPDATA type){
 	if (type == DEC_BSS) printf("DEC_BSS \n");
 	if (type == HEX_BSS) printf("HEX_BSS\n");
@@ -214,6 +227,7 @@ void reverse(LISTE *l){
 		tete->suiv->suiv = NULL;
 	}
 }
+
 LISTE enchaine(LISTE l, void* val ){
 	LISTE nl = nouvliste();
 	nl = calloc(1,sizeof(*nl));
