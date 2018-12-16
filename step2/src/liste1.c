@@ -12,6 +12,8 @@
 #include "donneesdata.h"
 #include "donneesbss.h"
 #include "tablesymb.h"
+#include "table_de_relocation.h"
+
 
 typedef enum typeopdd TYPOPDATA;
 
@@ -87,7 +89,10 @@ DATA nouvdata(char* type, int nbop, int line, int dec, char* optoken, TYPOP type
 */
 
 void printLex(LISTE l ){
-
+	if (l == NULL){
+		printf("liste vide\n");
+		return ;
+	}
 
 	LEXEM nlex;
 	nlex = l->val ;
@@ -119,6 +124,10 @@ void printtype(TYPE_L type){
 }
 
 void printLINST(LISTE l){
+	if (l == NULL){
+		printf("liste vide\n");
+		return ;
+	}
 	IT ninst = l->val ;
 	int i = 0;
 	while (l != NULL){
@@ -161,6 +170,10 @@ void printtypeI(TYPEOPINST type){
 }
 
 void PrintLdata(LISTE l){
+	if (l == NULL){
+		printf("liste vide\n");
+		return ;
+	}
 	DATA nouvdata = l->val;
 	int i = 0;
 	while (l!=NULL){
@@ -185,6 +198,10 @@ void printtypeDA(TYPOPDATA type){
 	if (type == SYMB_DD) printf("SYMB_DD \n");
 }
 void PrintLbss(LISTE l){
+	if (l == NULL){
+		printf("liste vide\n");
+		return ;
+	}
 	BSS nouvbss = l->val;
 	int i = 0;
 	while (l!=NULL){
@@ -200,7 +217,33 @@ void PrintLbss(LISTE l){
 
 }
 
+void Printtable_reloc(LISTE l){printf("print table reloc\n");
+	if (l == NULL) {
+		printf("table vide\n");
+		return ;
+	}
+	tabrel nouvtr = l->val;
+	TS nouvts;
+	int i = 0;
+	while( l!= NULL){
+		nouvtr = l->val;
+		printf("\n %s \n", nouvtr->section);
+		printf("adresse relative %d \n",nouvtr->adresse);
+		printf("type pas encore\n");
+		nouvts = nouvtr->psymbol;
+		printf("	Symbole : %s",nouvts->etiq);
+		printf("	TYPE : %s",nouvts->type);
+		printf("	Ligne : %d",nouvts->line);
+		printf("	dec : %d\n",nouvts->dec);
+		l = l->suiv;
+	}
+}
+
 void print_etiquette(LISTE l){
+	if (l == NULL){
+		printf("liste vide\n");
+		return ;
+	}
 	TS nouvts = l->val;
 	while(l!=NULL){
 		nouvts = l->val;
@@ -217,7 +260,11 @@ void printtypeBS(TYPOPDATA type){
 	if (type == DEC_BSS) printf("DEC_BSS \n");
 	if (type == HEX_BSS) printf("HEX_BSS\n");
 }
-void reverse(LISTE *l){
+void reverse(LISTE *l){printf("reverse\n\n");
+	if (l == NULL){
+		printf("liste vide\n");
+		return ;
+	}
 	LISTE inv = *l, tete;
 	if (inv && inv->suiv){
 		tete = inv->suiv;

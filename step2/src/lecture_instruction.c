@@ -14,6 +14,7 @@
 #include <dictionnaire.h>
 
 
+
 /* fonction qui crée une nouvelle cellule BSS */
 OPINST* nouvopt(){
 	OPINST* op = calloc(STRLEN,sizeof(*op));
@@ -21,6 +22,7 @@ OPINST* nouvopt(){
 }
 IT nouvinst(char* token, char* type, int nbop, int nline, int dec, OPINST* opt1,OPINST* opt2,OPINST* opt3){
 	int i = 0;
+
 	IT lit = calloc(1,sizeof(*lit));
 	strcpy(lit->obj, token);
 	strcpy(lit->type, type);
@@ -41,7 +43,7 @@ IT nouvinst(char* token, char* type, int nbop, int nline, int dec, OPINST* opt1,
 }
 
 
-LISTE lecture_instruction(LISTE* collect_ins,int* pinst,char* token, char* type, int* pnbop, int* nline, int* dec, OPINST* opt1,OPINST* opt2,OPINST* opt3, LISTE l, inst_def_t* dict, int* p_nb_inst, psinst_def_t* pseudo_dict, int* p_nb_pseudo_inst){
+LISTE lecture_instruction(char* typeR,int* sdec,int *psymb,LEXEM* s,LISTE* collect_ins,int* pinst,char* token, char* type, int* pnbop, int* nline, int* dec, OPINST* opt1,OPINST* opt2,OPINST* opt3, LISTE l, inst_def_t* dict, int* p_nb_inst, psinst_def_t* pseudo_dict, int* p_nb_pseudo_inst){
 		LEXEM c = l->val;
 		LISTE lp = l;
 		LEXEM cp = c;
@@ -51,7 +53,7 @@ LISTE lecture_instruction(LISTE* collect_ins,int* pinst,char* token, char* type,
 		if (*pinst == 0){
 		printf("%s\n",c->obj);
 		OPINST opi = calloc(1,sizeof(*opi));
-		int i;
+		int i;int z;
 		nbop = 0;
 		for(i=0; i< *p_nb_inst; i++){/*printf("boucle1\n");printf("%s\n",c->obj);printf("%s\n", dict[i].symbole);*/
 			if(!strcmp(c->obj, dict[i].symbole)){printf("if1\n");printf("nb pseudo dict %d\n",*p_nb_pseudo_inst);
@@ -87,6 +89,7 @@ LISTE lecture_instruction(LISTE* collect_ins,int* pinst,char* token, char* type,
 				nb_opm = dict[i].nb_op;
 				l = l-> suiv;
 				c = l->val;
+				z = i;
 				break;
 			}
 		}
@@ -99,6 +102,10 @@ LISTE lecture_instruction(LISTE* collect_ins,int* pinst,char* token, char* type,
 				if(c->type == SYMB){printf("SYMB\n");
 				strcpy(opi->token, c->obj);
 				opi->type = ETIQ;
+				*s = c;
+				strcpy(typeR, dict[z].types[nbop-1]);
+				*sdec = -1;
+				*psymb = 1;
 			}
 
 				if(c->type == REG){printf("REG\n");
@@ -252,13 +259,13 @@ LISTE lecture_instruction(LISTE* collect_ins,int* pinst,char* token, char* type,
 							if (!strcmp(pseudo_dict[*pinst].inst[i].types[j], "OP1")){
 								oppst[i] = opt[0];
 							}
-							if (!strcmp(pseudo_dict[*pinst].inst[i].types[j], "OP2")){
+							else if (!strcmp(pseudo_dict[*pinst].inst[i].types[j], "OP2")){
 								oppst[i] = opt[1];
 							}
 							else if (!strcmp(pseudo_dict[*pinst].inst[i].types[j], "OP3")){
 								oppst[i] = opt[2];
 							}
-						/*	else if (!strcmp(pseudo_dict[*pinst].inst[i].types[j], "up_OP2")){
+							/*else if (!strcmp(pseudo_dict[*pinst].inst[i].types[j], "up_OP2")){
 
 								oppst[i] = opt[0];
 							}*/
@@ -286,3 +293,9 @@ LISTE lecture_instruction(LISTE* collect_ins,int* pinst,char* token, char* type,
 					return l;
 				}
 			}
+
+/*type donnetype(char* c){
+
+
+	if (!strcmp(c->obj, ))
+}*/

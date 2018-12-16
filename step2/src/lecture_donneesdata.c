@@ -33,7 +33,7 @@ DATA nouvdata(char* data,/*char* type,*/ int nbop, int line, int dec, OPDD opera
 
 
 
-LISTE  lecture_data(char* data,/* char* type,*/ int* nbop, int* line, int* dec, OPDD operande, LISTE l){
+LISTE  lecture_data(char* typeR,int* sdec,int *psymb,LEXEM* s,char* data,/* char* type,*/ int* nbop, int* line, int* dec, OPDD operande, LISTE l){
 		LEXEM c = l->val;printf("\n valeur de c->obj : %sT\n",c->obj);
 	/*	if(! !strcmp(c->obj, ".word ") || !strcmp(c->obj, ".asciiz ") || !strcmp(c->obj, ".space ")){ */
 		if (!strcmp(c->obj, ".word ")){
@@ -41,20 +41,25 @@ LISTE  lecture_data(char* data,/* char* type,*/ int* nbop, int* line, int* dec, 
 			printf("lec_dt\n");
 			strcpy(data, c->obj);
 			*line = c->nline;
-			printf("why?");
 			*dec = ((*dec%4)+1)*4;
 		/*	strcpy(type, c->obj);*/
 			*nbop = 0;
 			while(c->type != NL){printf("coucou\n");
-				if(c->type == HEX || c->type == DECIM){
+				 if(c->type == HEX || c->type == DECIM){printf("1\n");
 					*nbop = *nbop +1;
 					strcpy(operande->token , c->obj);
 					operande->type = INT_DD;
+					printf("2\n");
 				}
-				if(c->type == SYMB){
+				if(c->type == SYMB){printf("etiquette\n");printf("3\n");
 					*nbop = *nbop +1;
 					strcpy(operande->token , c->obj);
 					operande->type = SYMB_DD;
+					*s = c;
+					strcpy(typeR,"R_MIPS_32");
+					*sdec = -1;
+					*psymb = 1;
+
 				}
 				l = l->suiv;
 				c = l->val;
@@ -80,6 +85,9 @@ LISTE  lecture_data(char* data,/* char* type,*/ int* nbop, int* line, int* dec, 
 					*nbop = *nbop +1;
 					strcpy(operande->token , c->obj);
 					operande->type = SYMB_DD;
+					s = c;
+					*sdec = -1;
+					*psymb = 1 ;
 				}
 				if(c->type == CHAIN){
 					*nbop = *nbop +1;
@@ -135,6 +143,6 @@ LISTE  lecture_data(char* data,/* char* type,*/ int* nbop, int* line, int* dec, 
 		}
 
 
-
+		printf("FIN\n");
 		return l;
 }

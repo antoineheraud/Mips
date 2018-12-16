@@ -69,7 +69,7 @@ long* tab_base_offset(OPINST* f, int indice){
     char* token;
     int token_size=0;
     long* tab;
-    char** ptr; 
+    char** ptr;
     while(isdigit(*end)) end = end +1; 				/*partie offset*/
 		token_size=end-start;
 		printf("Nombre de size de la partie offset de base offset %d", token_size);
@@ -90,7 +90,7 @@ long* tab_base_offset(OPINST* f, int indice){
 		tab[1] = strtol(token, ptr, 10);
 		return tab;
 }
-    
+
 
 int is_base_offset_text(OPINST* f, int indice){
     long* tab = tab_base_offset(f, indice);

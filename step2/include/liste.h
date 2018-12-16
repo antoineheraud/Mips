@@ -9,10 +9,10 @@
 #include "global.h"
 #include "notify.h"
 /*#include <lex.h>*/
-/*#include <instruction.h>
+#include <instruction.h>
 #include <donneesdata.h>
 #include <donneesbss.h>
-#include <tablesymb.h>*/
+#include <tablesymb.h>
 typedef enum type TYPE_L;
 typedef enum typeop TYPEOPINST;
 
@@ -38,4 +38,5 @@ void printtypeDA(TYPOPDATA type);
 void PrintLbss(LISTE l);
 void printtypeBS(TYPOPDATA type);
 void print_etiquette(LISTE l);
+void Printtable_reloc(LISTE l);
 #endif /* _LISTE_H_ */

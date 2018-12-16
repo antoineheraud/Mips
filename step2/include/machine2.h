@@ -20,7 +20,7 @@
 
 
 void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LISTE* collect_bss,LISTE* collect_symb,inst_def_t* dict, int* p_nb_inst,psinst_def_t* pseudo_dict, int* p_nb_pseudo_inst);
-
+void machine_3eme_passe(LISTE* ptable_relocT,LISTE* ptable_relocD,LISTE listlex, LISTE collect_ins, LISTE collect_data, LISTE collect_bss,LISTE collect_symb);
 
 
 #endif

@@ -11,7 +11,8 @@ struct tablesymb {
   int line; /*numéro de la ligne */
   char section[STRLEN];
   int dec;  /* décalage ou adresse relative dans la section*/
-  struct tablesymb* suiv;
+  int adresserel;
+
 };
 
 typedef struct tablesymb* TS;
