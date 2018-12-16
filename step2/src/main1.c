@@ -71,7 +71,7 @@ int main ( int argc, char *argv[] ) {
   char         	 *file 	= NULL;
   int i;
   int j;
-
+  int k;
 
   /* exemples d'utilisation des macros du fichier notify.h */
   /* WARNING_MSG : sera toujours affiche */
@@ -136,15 +136,27 @@ int main ( int argc, char *argv[] ) {
 
   int nb_inst;
   int nb_pseudo_inst;
+
   printf("lect dico\n" );
   lect_dico_int("./dic.txt", &nb_inst, pdict);
   printf("lect pseudo dico\n" );
   lect_pseudo_dic("./pseudo_dict.txt", &nb_pseudo_inst, p_pseudo_dict);
   printf("nombre de op %d\n ", nb_inst);
+  printf("START\n\n");
   for (i = 0;i<nb_pseudo_inst;i++) {
     printf("%s\n",pseudo_dict[i].type);
     printf("%s\n", pseudo_dict[i].symbole);
-    printf("%d\n",pseudo_dict[i].nb_op);
+    printf("nombre de op%d\n",pseudo_dict[i].nb_op);
+    printf("nombre pop%d\n",pseudo_dict[i].nb_pop);
+    for (j = 0;j<pseudo_dict[i].nb_pop;j++){
+      printf("%s\n",pseudo_dict[i].inst[j].symbole);
+      printf("%s\n",pseudo_dict[i].inst[j].type);
+      printf("%d\n",pseudo_dict[i].inst[j].nb_op);
+      for (k = 0;k<pseudo_dict[i].inst[j].nb_op;k++){
+        printf("%s\n",pseudo_dict[i].inst[j].types[k]);
+
+      }
+    }
   }
   printf("\n\n\n\n");
   for (i = 0;i<nb_inst;i++) {
@@ -162,20 +174,20 @@ int main ( int argc, char *argv[] ) {
   machine_etat_2(listlex, pcollect_ins,  pcollect_data, pcollect_bss, pcollect_symb, dict,  &nb_inst, pseudo_dict, &nb_pseudo_inst);
   printf("\nfinmachine à état\n\n");
   reverse(pcollect_ins);
-  printf("reverse\n");
+
   printLINST(collect_ins);
 
   printf("FIN\n");
   reverse(pcollect_data);
-  printf("reverse\n");
+
   PrintLdata(collect_data);
   printf("FIN\n");
   reverse(pcollect_bss);
-  printf("reverse\n");
+  
   PrintLbss(collect_bss);
   printf("FIN\n");
   reverse(pcollect_symb);
-  printf("reverse\n");
+
   print_etiquette(collect_symb);
 
   machine_3eme_passe(ptable_relocT,ptable_relocD,listlex, collect_ins,collect_data,collect_bss,collect_symb);

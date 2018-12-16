@@ -21,6 +21,7 @@ typedef enum typeop TYPEOPINST;
 struct operande {
   char token[STRLEN];
   TYPEOPINST type;
+  char typeR[STRLEN];
 }  ;
 typedef struct operande* OPINST;
 /*typedef struct OPINST* POPINST;*/

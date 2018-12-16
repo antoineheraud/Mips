@@ -43,7 +43,7 @@ IT nouvinst(char* token, char* type, int nbop, int nline, int dec, OPINST* opt1,
 }
 
 
-LISTE lecture_instruction(char* typeR,int* sdec,int *psymb,LEXEM* s,LISTE* collect_ins,int* pinst,char* token, char* type, int* pnbop, int* nline, int* dec, OPINST* opt1,OPINST* opt2,OPINST* opt3, LISTE l, inst_def_t* dict, int* p_nb_inst, psinst_def_t* pseudo_dict, int* p_nb_pseudo_inst){
+LISTE lecture_instruction(int* psi,char* typeR,int* sdec,int *psymb,LEXEM* s,LISTE* collect_ins,int* pinst,char* token, char* type, int* pnbop, int* nline, int* dec, OPINST* opt1,OPINST* opt2,OPINST* opt3, LISTE l, inst_def_t* dict, int* p_nb_inst, psinst_def_t* pseudo_dict, int* p_nb_pseudo_inst){
 		LEXEM c = l->val;
 		LISTE lp = l;
 		LEXEM cp = c;
@@ -60,18 +60,18 @@ LISTE lecture_instruction(char* typeR,int* sdec,int *psymb,LEXEM* s,LISTE* colle
 				for(j = 0;j< *p_nb_pseudo_inst;j++){
 					printf("%s\n", pseudo_dict[j].symbole);
 						if(!strcmp(c->obj, pseudo_dict[j].symbole)){printf("ENFIN\n");
-							/*if(!strcmp(c->obj,"lw")){
+							if(!strcmp(c->obj,"lw")){
 								lp = lp->suiv;
 								cp = lp->val;
 								if(cp->type != REG){printf("break REGI\n"); break;}
 								lp = lp->suiv;
 								lp = lp->suiv;
 								cp = lp->val;
-								if(cp->type != SYMB ){printf("break SYMB\n");
-									*pinst = j;
-									return l;
-								}
-							}*/
+								if(cp->type != SYMB ){printf("break SYMB\n");break;}
+								*psi = i;
+								*pinst = j;
+								return l;
+							}
 							if(!strcmp(c->obj, "nop")){
 								printf("YES\n");
 								*pinst = j;printf("j vaut %d\n",*pinst);
@@ -189,6 +189,8 @@ LISTE lecture_instruction(char* typeR,int* sdec,int *psymb,LEXEM* s,LISTE* colle
 				int i;
 				nbop = 0;
 				*nline = c->nline;
+				char sauvegardeinstruction[STRLEN];
+				strcpy(sauvegardeinstruction,c->obj);
 				/* nbop = dict[i].nb_op*/
 
 				nb_opm = pseudo_dict[*pinst].nb_op;
@@ -197,22 +199,29 @@ LISTE lecture_instruction(char* typeR,int* sdec,int *psymb,LEXEM* s,LISTE* colle
 				int psint = pseudo_dict[*pinst].nb_pop;
 				while (nbop<nb_opm){
 					opi = calloc(1,sizeof(*opi));
-					nbop= 1+nbop;
+					nbop= 1+nbop;printf("+1\n");
 					if(c->type == REG || c->type == HEX || c->type == DECIM || c->type == SYMB){
 						if(c->type == SYMB){printf("SYMB\n");
 						strcpy(opi->token, c->obj);
 						opi->type = ETIQ;
+						*s = c;
+						if (!strcmp(sauvegardeinstruction,"lw")){
+							strcpy(typeR,"P_LW");
+						}
+						else {strcpy(typeR, dict[*psi].types[nbop-1]);}
+						*sdec = -1;
+						*psymb = 1;
 					}
 						if(c->type == REG){printf("REG\n");
 									strcpy(opi->token, c->obj);
 									opi->type = REGI;
 								}
 							else if(c->type == HEX){printf("HEX\n");
-								if(!strcmp(dict[i].symbole, "ADDI") || !strcmp(dict[i].symbole, "LUI") || !strcmp(dict[i].symbole, "LI")){
+								if(!strcmp(dict[*psi].symbole, "ADDI") || !strcmp(dict[*psi].symbole, "LUI") || !strcmp(dict[*psi].symbole, "LI")){
 									strcpy(opi->token, c->obj);
 									opi->type = IMMEDIATE;
 									}
-								else if(!strcmp(dict[i].symbole, "ROTR") || !strcmp(dict[i].symbole, "SLL") || !strcmp(dict[i].symbole, "SRL")){
+								else if(!strcmp(dict[*psi].symbole, "ROTR") || !strcmp(dict[*psi].symbole, "SLL") || !strcmp(dict[*psi].symbole, "SRL")){
 									strcpy(opi->token, c->obj);
 									opi->type = SA;
 									}
@@ -227,18 +236,19 @@ LISTE lecture_instruction(char* typeR,int* sdec,int *psymb,LEXEM* s,LISTE* colle
 									}
 									strcat(opi->token, c->obj);
 								}
-								else if(!strcmp(dict[i].symbole, "addi") || !strcmp(dict[i].symbole, "lui") || !strcmp(dict[i].symbole, "li")){
+								else if(!strcmp(dict[*psi].symbole, "addi") || !strcmp(dict[*psi].symbole, "lui") || !strcmp(dict[*psi].symbole, "li")){
 									strcpy(opi->token, c->obj);
 									opi->type = IMMEDIATE;
 									}
-								else if(!strcmp(dict[i].symbole, "rotr") || !strcmp(dict[i].symbole, "sll") || !strcmp(dict[i].symbole, "srl")){
+								else if(!strcmp(dict[*psi].symbole, "rotr") || !strcmp(dict[*psi].symbole, "sll") || !strcmp(dict[*psi].symbole, "srl")){
 										strcpy(opi->token, c->obj);
 										opi->type = SA;}
 								}
 
 								opt[nbop - 1] = opi;}
 					/*	if (strcmp(opt[nbop-1]->type , pseudo_dict[*pinst].types[nbop-1])){	WARNING_MSG("Mauvais type d'opérande à la ligne %d",*nline);}*/
-						if(nbop > dict[i].nb_op){
+						printf("nbop : %d dictnbop : %d\n",nbop,dict[*psi].nb_op);
+						if(nbop > dict[*psi].nb_op){
 							printf("Erreur d'incohérence de nombre d'opérandes à la ligne %d \n", *nline);
 							return NULL;}
 						l = l->suiv;
@@ -251,24 +261,31 @@ LISTE lecture_instruction(char* typeR,int* sdec,int *psymb,LEXEM* s,LISTE* colle
 							break;
 						}
 					}
+					printf("nb pseudoI : %d\n",pseudo_dict[*pinst].nb_pop);
 					for (i=0;i<pseudo_dict[*pinst].nb_pop;i++){
 	  				*dec = *dec + 4;
 						OPINST* oppst = calloc(3,sizeof(*oppst));
-						for (j=0;j<pseudo_dict[*pinst].inst[i].nb_op;j++){printf("j vaut %d\n",j);
+						printf("nb pseudoOP : %d\n",pseudo_dict[*pinst].inst[i].nb_op);
+						for (j=0;j<pseudo_dict[*pinst].inst[i].nb_op;j++){printf("j vaut %d\n",j);printf("type : %s\n",pseudo_dict[*pinst].inst[i].types[j]);
 							OPINST opps = calloc(1,sizeof(*opps));
-							if (!strcmp(pseudo_dict[*pinst].inst[i].types[j], "OP1")){
-								oppst[i] = opt[0];
+							if (!strcmp(pseudo_dict[*pinst].inst[i].types[j], "OP1")){printf("OP1 OK\n");
+								oppst[j] = opt[0];
 							}
 							else if (!strcmp(pseudo_dict[*pinst].inst[i].types[j], "OP2")){
-								oppst[i] = opt[1];
+								oppst[j] = opt[1];
 							}
 							else if (!strcmp(pseudo_dict[*pinst].inst[i].types[j], "OP3")){
-								oppst[i] = opt[2];
+								oppst[j] = opt[2];
 							}
-							/*else if (!strcmp(pseudo_dict[*pinst].inst[i].types[j], "up_OP2")){
+							else if (!strcmp(pseudo_dict[*pinst].inst[i].types[j], "up_OP2")){printf("OK1\n");
+								strcpy(opt[1]->typeR,"up_OP2");
+								oppst[j] = opt[1];
+							}
+							else if (!strcmp(pseudo_dict[*pinst].inst[i].types[j], "low_OP2(OP1)")){printf("OK2\n");
 
-								oppst[i] = opt[0];
-							}*/
+								strcpy(opt[1]->typeR,"low_OP2(OP1)");
+								oppst[j] = opt[1];
+							}
 							else if (!strcmp(pseudo_dict[*pinst].inst[i].types[j], "$0")){printf(" $0 OK\n");
 								strcpy(opps->token , "$0");
 								opps->type = REGI;

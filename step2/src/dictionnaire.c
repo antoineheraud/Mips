@@ -85,6 +85,7 @@ void lect_pseudo_dic(char* nomFichierDico, int* p_nb_inst,psinst_def_t** dict){
 	FILE* f1 = NULL;
     int i; int j; int k;
 	char s1[STRLEN];
+	inst_def_t* psinst;
 
 
 
@@ -119,20 +120,20 @@ void lect_pseudo_dic(char* nomFichierDico, int* p_nb_inst,psinst_def_t** dict){
 		for(k=0; k<tab[i].nb_op; k++){
 			tab[i].types[k] = calloc(16, sizeof(char));
 			fscanf(f1, "%s", tab[i].types[k]);}
-
+		psinst = calloc(tab[i].nb_pop,sizeof(*psinst));
 		for (j = 0; j<tab[i].nb_pop;j++){
-			inst_def_t* psinst = calloc(tab[i].nb_pop,sizeof(*psinst));
+			/*psinst = calloc(tab[i].nb_pop,sizeof(*psinst));*/
 			fscanf(f1, "%s" , psinst[j].symbole);
 			printf("%s\n",psinst[j].symbole );
 			fscanf(f1, "%s",psinst[j].type);
 			fscanf(f1, "%d",&psinst[j].nb_op);
-			int lol = psinst[j].nb_op;
-			printf("nb op : %d\n",lol);
-			psinst[j].types = calloc(lol,sizeof(*(psinst[j].types)));
+			printf("nb op : %d\n",psinst[j].nb_op);
+			psinst[j].types = calloc(psinst[j].nb_op,sizeof(char));
 			for (k = 0; psinst[j].symbole[k];k++)  psinst[j].symbole[k] = tolower(psinst[j].symbole[k]);
-			for(k=0; k<lol; k++){
+			for(k=0; k<psinst[j].nb_op; k++){
 				psinst[j].types[k] = calloc(16,sizeof(char)) ;
 				fscanf(f1, "%s", psinst[j].types[k]);printf("type : %s\n",psinst[j].types[k]);}
+
 			tab[i].inst = psinst;
 		}
 
@@ -144,6 +145,22 @@ void lect_pseudo_dic(char* nomFichierDico, int* p_nb_inst,psinst_def_t** dict){
 		printf("%s\n", tab[i].symbole);
 		printf("%d\n",tab[i].nb_op);
 	}
+	printf("START\n\n");
+  for (i = 0;i<*p_nb_inst;i++) {
+    printf("%s\n",tab[i].type);
+    printf("%s\n", tab[i].symbole);
+    printf("nombre de op%d\n",tab[i].nb_op);
+    printf("nombre pop%d\n",tab[i].nb_pop);
+    for (j = 0;j<tab[i].nb_pop;j++){
+      printf("%s\n",tab[i].inst[j].symbole);
+      printf("%s\n",tab[i].inst[j].type);
+      printf("%d\n",tab[i].inst[j].nb_op);
+      for (k = 0;k<tab[i].inst[j].nb_op;k++){
+        printf("%s\n",tab[i].inst[j].types[k]);
+
+      }
+    }
+  }
 	printf("end lect pseudo dico\n\n" );
 	*dict = tab;
 

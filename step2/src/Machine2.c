@@ -38,6 +38,7 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
   int decbs = 0;
   int pinst;
   int* ppinst = &pinst;
+  int* psi;
   /* parametres de la collection d'instruction*/
 
 
@@ -95,7 +96,7 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
     OPINST opt2 = calloc(1,sizeof(*opt2));/*printf("%p\n",opt2);*/
     OPINST opt3 = calloc(1,sizeof(*opt3));/*printf("%p\n",opt3);printf("%p\n",&opt3);*/
 
-    listlex=lecture_instruction(typeR,&sdec,&symb,&s ,collect_ins,ppinst, token, type, &nbop, &line, &dec, &opt1,&opt2,&opt3, listlex, dict, p_nb_inst, pseudo_dict, p_nb_pseudo_inst);
+    listlex=lecture_instruction(&psi,typeR,&sdec,&symb,&s ,collect_ins,ppinst, token, type, &nbop, &line, &dec, &opt1,&opt2,&opt3, listlex, dict, p_nb_inst, pseudo_dict, p_nb_pseudo_inst);
     printf("lecture\n");printf("pinst vaut : %d\n",pinst);
     /*printf("%s \n",opt[0].token);*/
     /*printf("%s\n",(opt1)->token);*/
@@ -143,8 +144,8 @@ void machine_etat_2(LISTE listlex, LISTE* collect_ins, LISTE* collect_data, LIST
         if (typeop == IMMEDIATE) printf ("IMMEDIATE\n");
       }*/}
       if (pinst != 0){printf("pinst != 0\n");
-      listlex=lecture_instruction(typeR,&sdec,&symb,&s,collect_ins,ppinst, token, type, &nbop, &line, &dec, &opt1,&opt2,&opt3, listlex, dict, p_nb_inst, pseudo_dict, p_nb_pseudo_inst);
-
+      listlex=lecture_instruction(&psi,typeR,&sdec,&symb,&s,collect_ins,ppinst, token, type, &nbop, &line, &dec, &opt1,&opt2,&opt3, listlex, dict, p_nb_inst, pseudo_dict, p_nb_pseudo_inst);
+      if (symb == 1){ lecture_etiquette(typeR,s,&sline,&sdec,".text",collect_symb);}
     }line = line+1;
   }
   line = line+1;
