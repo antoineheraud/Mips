@@ -230,20 +230,24 @@ void machine_3eme_passe(LISTE* table_relocT,LISTE* table_relocD,LISTE listlex, L
   LISTE Lsymb2 = collect_symb;
   TS nsymb = Lsymb->val;
   TS nsymb2;
+  TS nsymb3;
   TS TRsymb;
   tabrel TR;
   int compteur = 0;
   while(Lsymb != NULL ){printf("bouvle\n");
     nsymb = Lsymb->val;printf("%d\n",nsymb->dec );printf("premiere boucle%s  %d %d\n",nsymb->etiq,nsymb->dec,nsymb->line );
-    if (nsymb->dec == -1){printf(" appel\n");printf("a relocer %s\n",nsymb->etiq);Lsymb2 = collect_symb;
+    if (nsymb->dec == -1){printf(" appel\n");printf("a relocer %s  %d\n",nsymb->etiq,nsymb->dec);Lsymb2 = collect_symb;
       if(!strcmp(nsymb->section,".text")){printf("text\n");compteur = 0;
         while (Lsymb2 != NULL){
           nsymb2 = Lsymb2->val;
-          printf("while : 1 : %s ; 2 : %s\n", nsymb->etiq, nsymb2->etiq);
+          printf("while : 1 : %s ; 2 : %s dec : %d\n", nsymb->etiq, nsymb2->etiq, nsymb2->dec);
           if(!strcmp(nsymb->etiq,nsymb2->etiq)&& nsymb2->dec != -1){printf("RELOCATION %s\n",nsymb->section);
             compteur = 1;
-            nsymb->dec = nsymb2->dec;
-            TR = charger_table_de_relocation_text(nsymb,nsymb);
+            nsymb3 = calloc(1,sizeof(*nsymb3));
+            strcpy(nsymb3->etiq,nsymb->etiq);strcpy(nsymb3->type,nsymb->type);nsymb3->line = nsymb->line;
+            strcpy(nsymb3->section,nsymb->section);nsymb3->adresserel=nsymb->adresserel;
+            nsymb3->dec = nsymb2->dec;
+            TR = charger_table_de_relocation_text(nsymb3,nsymb3);
             *table_relocT = entete((*table_relocT),TR);
           }
 
@@ -258,8 +262,11 @@ void machine_3eme_passe(LISTE* table_relocT,LISTE* table_relocD,LISTE listlex, L
         while (Lsymb2 != NULL){nsymb2 = Lsymb2->val;
           if(!strcmp(nsymb->etiq,nsymb2->etiq)&& nsymb2->dec != -1){printf("RELOCATION %s\n",nsymb->section);
             compteur = 1;
-            nsymb->dec = nsymb2->dec;
-            TR = charger_table_de_relocation_data(nsymb,nsymb);
+            nsymb3 = calloc(1,sizeof(*nsymb3));
+            strcpy(nsymb3->etiq,nsymb->etiq);strcpy(nsymb3->type,nsymb->type);nsymb3->line = nsymb->line;
+            strcpy(nsymb3->section,nsymb->section);nsymb3->adresserel=nsymb->adresserel;
+            nsymb3->dec = nsymb2->dec;
+            TR = charger_table_de_relocation_data(nsymb3,nsymb3);
             *table_relocD = entete((*table_relocD),TR);
           }
           Lsymb2 = Lsymb2->suiv;
